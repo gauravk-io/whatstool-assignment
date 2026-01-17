@@ -1,10 +1,19 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
+
+const authRoutes = require("./routes/auth");
+const teamRoutes = require("./routes/team");
 
 const app = express();
 
 // parse JSON bodies
 app.use(express.json());
+
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api", teamRoutes);
 
 // health check
 app.get("/health", (req, res) => {
@@ -28,6 +37,6 @@ mongoose
   });
 
 // Error handling
-process.on("unhandledCatch", (error) => {
-  console.error("Unhandled Promise:", error);
+process.on("unhandledRejection", (error) => {
+  console.error("Unhandled Promise Rejection:", error);
 });

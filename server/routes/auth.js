@@ -17,6 +17,25 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ error: "All fields are required." });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: "Invalid email format." });
+    }
+
+    // Validate password length
+    if (password.length < 6) {
+      return res.status(400).json({ error: "Password must be at least 6 characters long." });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email: normalizedEmail });
+    if (existingUser) {
+      return res.status(400).json({ error: "User with this email already exists." });
+    }
+
     // Create organization
     const organization = new Organization({
       name: organizationName,
@@ -29,7 +48,7 @@ router.post("/register", async (req, res) => {
     // Create admin
     const user = new User({
       name,
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
       passwordHash,
       role: "admin",
       orgId: organization._id,
