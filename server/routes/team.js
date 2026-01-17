@@ -6,7 +6,7 @@ const { authMiddleware, adminOnly } = require("../middleware/auth");
 
 // Team Routes
 
-router.get("/team", authMiddleware, adminOnly, teamController.getTeamMembers);
+router.get("/team", authMiddleware, teamController.getTeamMembers);
 router.delete(
   "/team/:userId",
   authMiddleware,
