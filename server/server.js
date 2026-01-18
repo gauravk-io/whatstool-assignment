@@ -1,13 +1,14 @@
 require("dotenv").config();
-
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const authRoutes = require("./routes/auth");
 const teamRoutes = require("./routes/team");
 
 const app = express();
 
+app.use(cors());
 // parse JSON bodies
 app.use(express.json());
 
@@ -15,8 +16,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api", teamRoutes);
 
-// health check
-app.get("/health", (req, res) => {
+app.get("/", (req, res) => {
   res.json({ status: "Running" });
 });
 
