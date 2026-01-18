@@ -42,11 +42,12 @@ userSchema.methods.generateAuthToken = function () {
   return jwt.sign(
     {
       userId: this._id.toString(),
+      name: this.name,
       orgId: this.orgId.toString(),
       role: this.role,
     },
     process.env.JWT_SECRET,
-    { expiresIn: "7d" }
+    { expiresIn: "7d" },
   );
 };
 

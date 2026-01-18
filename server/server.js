@@ -22,7 +22,6 @@ const allowedOrigins = ["http://localhost:5173"];
 if (process.env.FRONTEND_URL) {
   allowedOrigins.push(process.env.FRONTEND_URL);
 }
-console.log("Allowed CORS origins:", allowedOrigins);
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin && process.env.MODE !== "production") {

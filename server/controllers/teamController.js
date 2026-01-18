@@ -8,7 +8,7 @@ exports.getTeamMembers = async (req, res) => {
   try {
     // Query users where orgId matches the authenticated user's org
     const teamMembers = await User.find(
-      { orgId: req.user.orgId, role: "member" },
+      { orgId: req.user.orgId  },
       { name: 1, email: 1, role: 1, createdAt: 1 },
     ).sort({ createdAt: -1 });
 

@@ -231,14 +231,16 @@ function Dashboard({ user, onLogout }) {
                         {member.role}
                       </span>
                     </td>
-                    {userIsAdmin && member.role !== "admin" && (
+                    {userIsAdmin && (
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button
-                          onClick={() => handleRemove(member._id)}
-                          className="text-red-600 hover:text-red-900 hover:bg-red-50 px-3 py-1 rounded transition-colors"
-                        >
-                          Remove
-                        </button>
+                        {member.role !== "admin" && (
+                          <button
+                            onClick={() => handleRemove(member._id)}
+                            className="text-red-600 hover:text-red-900 hover:bg-red-50 px-3 py-1 rounded transition-colors"
+                          >
+                            Remove
+                          </button>
+                        )}
                       </td>
                     )}
                   </tr>
