@@ -8,7 +8,19 @@ const teamRoutes = require("./routes/team");
 
 const app = express();
 
-app.use(cors());
+// CORS configuration
+const allowedOrigins = ["http://localhost:5173"];
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
+const corsOptions = {
+  origin: allowedOrigins,
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 // parse JSON bodies
 app.use(express.json());
 
