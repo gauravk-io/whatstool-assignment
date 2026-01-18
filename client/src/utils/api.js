@@ -1,6 +1,23 @@
 const API_URL = import.meta.env.VITE_API_URL || "/api";
 
 /**
+ * Ping backend to wake it up (this block of code is also for just the deployment purpose. Backend deployed on render so it sleep after 15 min of inactivity)
+ */
+export const pingBackend = async () => {
+  try {
+    const baseURL = API_URL.replace("/api", "");
+    const response = await fetch(`${baseURL}/`, {
+      method: "GET",
+      signal: AbortSignal.timeout(60000), // 60 second timeout
+    });
+    return response.ok;
+  } catch (error) {
+    console.error("Backend ping failed:", error);
+    return false;
+  }
+};
+
+/**
  * Get JWT token from localStorage
  */
 export const getToken = () => {
