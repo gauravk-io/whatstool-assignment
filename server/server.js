@@ -8,19 +8,47 @@ const teamRoutes = require("./routes/team");
 
 const app = express();
 
+
+
+
+
+/**
+ * this block of code is only for the allowing CORS in production.
+ * otherwise simple app.use(cors()); is sufficient for development.
+ */
+
 // CORS configuration
 const allowedOrigins = ["http://localhost:5173"];
 if (process.env.FRONTEND_URL) {
   allowedOrigins.push(process.env.FRONTEND_URL);
 }
-
+console.log("Allowed CORS origins:", allowedOrigins);
 const corsOptions = {
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin && process.env.MODE !== "production") {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log("Blocked by CORS:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
   optionsSuccessStatus: 200,
 };
-
 app.use(cors(corsOptions));
+
+
+
+
+
+
+
 // parse JSON bodies
 app.use(express.json());
 
